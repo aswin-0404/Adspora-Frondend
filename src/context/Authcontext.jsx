@@ -6,13 +6,14 @@ export const AuthContext = createContext();
 
 const BASE_URL = "http://127.0.0.1:8000/api";
 
-
-
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  const navigate=useNavigate()
-  
+  const navigate = useNavigate();
+
   const register = async (formData) => {
     try {
       const res = await axios.post(`${BASE_URL}/register/`, {
@@ -24,12 +25,11 @@ export const AuthProvider = ({ children }) => {
         confirmpassword: formData.confirmPassword,
       });
 
-      return  res.data
-
+      return res.data;
     } catch (error) {
-    console.log("REGISTER ERROR:", error.response.data); // 👈 ADD THIS
-    return error.response.data;
-  }
+      console.log("REGISTER ERROR:", error.response.data); // 👈 ADD THIS
+      return error.response.data;
+    }
   };
 
   const login = async (formData) => {
@@ -39,19 +39,16 @@ export const AuthProvider = ({ children }) => {
         password: formData.password,
       });
 
-      setUser(res.data.user); 
+      setUser(res.data.user);
 
-      localStorage.setItem("access",res.data.token.access);
-      localStorage.setItem("refresh",res.data.token.refresh);
+      localStorage.setItem("access", res.data.token.access);
+      localStorage.setItem("refresh", res.data.token.refresh);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-
-
-      return { 
+      return {
         success: true,
-        role:res.data.user.role,
-        message:res.data.message,
-
+        role: res.data.user.role,
+        message: res.data.message,
       };
     } catch (error) {
       return {
@@ -61,20 +58,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout=()=>{
-    setUser(null)
-    localStorage.removeItem("refresh")
-    localStorage.removeItem("access")
-    localStorage.removeItem("user")
-    navigate('/login')
-  }
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("access");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, register, login ,logout}}>
+    <AuthContext.Provider value={{ user, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-
-

@@ -23,9 +23,6 @@ export default function LandingPage() {
               <button className="bg-white text-indigo-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100">
                 Explore Spaces
               </button>
-              <button className="border border-white px-6 py-3 rounded-xl font-semibold hover:bg-white hover:text-indigo-700">
-                Post an Ad
-              </button>
             </div>
           </div>
 

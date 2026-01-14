@@ -19,7 +19,7 @@ export default function SpaceOwnerLanding() {
             </p>
             <div className="mt-8 flex gap-4">
               <Link
-                to=""
+                to="/owner/addspace"
                 className="bg-white text-indigo-600 px-6 py-3 rounded-xl font-semibold shadow hover:bg-gray-100 transition"
               >
                 Get Started
@@ -109,7 +109,7 @@ export default function SpaceOwnerLanding() {
             through our platform.
           </p>
           <Link
-            to="/register"
+            to="/owner/addspace"
             className="inline-block mt-8 bg-indigo-600 text-white px-8 py-4 rounded-xl font-semibold shadow hover:bg-indigo-700 transition"
           >
             Start Listing
