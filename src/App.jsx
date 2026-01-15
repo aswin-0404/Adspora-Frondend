@@ -5,6 +5,7 @@ import Register from "./Accounts/Register"
 import Login from "./Accounts/Login"
 import SpaceOwnerLanding from "./owner/OwnerLandingpage"
 import AddSpace from "./owner/SpaceAdding"
+import MySpace from "./owner/Myspace"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
 
       <Route path='/ownerdashboard' element={<SpaceOwnerLanding/>}/>
       <Route path="/owner/addspace" element={<AddSpace/>}/>
+      <Route path="/myspace" element={<MySpace/>}/>
     </Routes>
 
     

@@ -32,11 +32,14 @@ export default function OwnerNavbar() {
           <Link to='/ownerdashboard' className="text-gray-700 hover:text-indigo-600 font-medium">
             Dashboard
           </Link>
-          <Link to="/owner/spaces" className="text-gray-700 hover:text-indigo-600 font-medium">
+          <Link to="/myspace" className="text-gray-700 hover:text-indigo-600 font-medium">
             My Spaces
           </Link>
           <Link to="/owner/bookings" className="text-gray-700 hover:text-indigo-600 font-medium">
             Bookings
+          </Link>
+          <Link to="/owner/addspace" className="text-gray-700 hover:text-indigo-600 font-medium">
+            Ad Space
           </Link>
         </div>
 
