@@ -1,0 +1,181 @@
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/Authcontext";
+import { Heart, Bell, User, LogOut, Search } from "lucide-react";
+import { WishlistContext } from "../context/wishlistContext";
+import axios from "axios";
+
+const BASE_URL = "http://127.0.0.1:8000/api";
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const { wishlistCount,setWishlistCount } = useContext(WishlistContext);
+
+
+  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
+
+  const handleProtectedNav = (path) => {
+    if (!user) navigate("/login");
+    else navigate(path);
+  };
+
+
+  const handleLogout = () => {
+  logout();
+  setWishlistCount(0);
+  setProfileOpen(false);
+  navigate("/");
+};
+
+
+  useEffect(() => {
+  if (!user) {
+    setWishlistCount(0);
+    return;
+  }
+
+  const fetchWishlistCount = async () => {
+    try {
+      const token = localStorage.getItem("access");
+      if (!token) return;
+
+      const res = await axios.get(
+        "http://127.0.0.1:8000/api/wishlist/count/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setWishlistCount(res.data.count);
+    } catch (err) {
+      console.error("Wishlist count error", err);
+      setWishlistCount(0);
+    }
+  };
+
+  fetchWishlistCount();
+}, [user]);
+
+
+
+
+  return (
+    <nav className="bg-white shadow-md fixed w-full z-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+
+          {/* LOGO */}
+          <span
+            className="text-2xl font-bold text-indigo-600 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            Adspora
+          </span>
+
+          {/* NAV LINKS */}
+          <div className="hidden md:flex items-center space-x-6">
+            <button onClick={() => navigate("/")} className="nav-btn">Home</button>
+            <button
+              onClick={() => handleProtectedNav("/spaces")}
+              className="nav-btn"
+            >
+              Explore Spaces
+            </button>
+          </div>
+
+          {/* SEARCH */}
+          {user && (
+            <div className="hidden md:flex items-center relative w-72">
+              <Search size={18} className="absolute left-3 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search spaces, locations..."
+                className="w-full pl-10 pr-4 py-2 text-sm border rounded-full
+                           focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          )}
+
+          {/* RIGHT SECTION */}
+          <div className="hidden md:flex items-center space-x-5 relative">
+
+            {/* ❤️ WISHLIST WITH COUNT */}
+            <button
+              onClick={() => handleProtectedNav("/wishlist")}
+              className="relative text-gray-600 hover:text-indigo-600"
+            >
+              <Heart size={22} />
+
+              {wishlistCount > 0 && (
+                <span
+                  className="absolute -top-2 -right-2 min-w-[18px] h-[18px]
+                             bg-red-600 text-white text-xs rounded-full
+                             flex items-center justify-center px-1"
+                >
+                  {wishlistCount}
+                </span>
+              )}
+            </button>
+
+            {/* 🔔 Notifications */}
+            {user && (
+              <button
+                onClick={() => handleProtectedNav("/notification")}
+                className="text-gray-600 hover:text-indigo-600"
+              >
+                <Bell size={22} />
+              </button>
+            )}
+
+            {/* 👤 PROFILE */}
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  className="text-gray-600 hover:text-indigo-600"
+                >
+                  <User size={24} />
+                </button>
+
+                {profileOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border">
+                    <button
+                      onClick={() => {
+                        navigate("/profile");
+                        setProfileOpen(false);
+                      }}
+                      className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100"
+                    >
+                      <User size={16} /> Profile
+                    </button>
+
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 w-full px-4 py-2 text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut size={16} /> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <button onClick={() => navigate("/login")}>Login</button>
+                <button onClick={() => navigate("/register")}>Sign Up</button>
+              </>
+            )}
+          </div>
+
+          {/* MOBILE MENU ICON */}
+          <div className="md:hidden">
+            <button onClick={() => setIsOpen(!isOpen)}>☰</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}

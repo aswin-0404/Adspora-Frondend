@@ -1,8 +1,31 @@
+import { useContext } from "react";
 import Footer from "./Footer";
 import Navbar from "./Nav";
+import { AuthContext } from "../context/Authcontext";
+import { useNavigate } from "react-router-dom";
 
 
 export default function LandingPage() {
+
+  const {user}=useContext(AuthContext);
+  const navigate=useNavigate();
+
+  const handleExplore=()=>{
+    if(!user){
+      navigate("/login")
+    }else{
+      navigate('/spaces')
+    }
+  }
+
+  const handleGetstart=()=>{
+    if(!user){
+      navigate("/login")
+    }else{
+      navigate('/spaces')
+    }
+  }
+
   return (
     <div className="font-sans">
       <Navbar />
@@ -20,7 +43,7 @@ export default function LandingPage() {
               connect— all in one platform.
             </p>
             <div className="mt-8 flex space-x-4">
-              <button className="bg-white text-indigo-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100">
+              <button onClick={handleExplore} className="bg-white text-indigo-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100">
                 Explore Spaces
               </button>
             </div>
@@ -112,7 +135,7 @@ export default function LandingPage() {
         <p className="mt-4 text-indigo-100">
           Join Adspora today and discover smarter advertising spaces.
         </p>
-        <button className="mt-6 bg-white text-indigo-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100">
+        <button onClick={handleGetstart} className="mt-6 bg-white text-indigo-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100">
           Get Started
         </button>
       </section>

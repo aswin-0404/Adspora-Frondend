@@ -21,22 +21,45 @@ export default function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (formData.password !== formData.confirmpassword) {
-      alert("Passwords do not match");
-      return;
-    }
+  if (formData.password !== formData.confirmpassword) {
+    alert("Passwords do not match");
+    return;
+  }
 
-    const result = await register(formData);
+  const result = await register(formData);
 
-    if (result?.message) {
-      alert(result.message);
-      navigate("/login");
-    } else {
-      alert(JSON.stringify(result));
-    }
-  };
+  if (result?.message) {
+    alert(result.message);
+    navigate("/login");
+    return;
+  }
+
+  // ✅ HANDLE BACKEND FIELD ERRORS (FIX)
+  if (result?.confirmpassword) {
+    alert(result.confirmpassword[0]);
+    return;
+  }
+
+  if (result?.email) {
+    alert(result.email[0]);
+    return;
+  }
+
+  if (result?.password) {
+    alert(result.password[0]);
+    return;
+  }
+
+  if (result?.adharnumber) {
+    alert(result.adharnumber[0]);
+    return;
+  }
+
+  alert("Registration failed. Please check your details.");
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
