@@ -4,6 +4,7 @@ import { Heart, MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import Navbar from "./Nav";
 import { useContext } from "react";
 import { WishlistContext } from "../context/wishlistContext";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
 
@@ -15,6 +16,32 @@ export default function SpaceListing() {
   const token = localStorage.getItem("access");
 
   const { wishlistCount, setWishlistCount } = useContext(WishlistContext);
+
+  const navigate = useNavigate();
+
+  const handleChat = async (space) => {
+    if (!space.owner?.id) {
+      alert("Owner not found for this space");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/chat/room/`,
+        {
+          space_id: space.id,
+          owner_id: space.owner.id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      navigate(`/chat/${res.data.room_id}`);
+    } catch (err) {
+      console.error("Chat creation failed", err.response?.data);
+    }
+  };
 
   // ✅ FETCH SPACES
   const fetchSpaces = async () => {
@@ -32,30 +59,29 @@ export default function SpaceListing() {
 
   // ✅ FETCH WISHLIST (IMPORTANT FIX)
   const fetchWishlist = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/wishlist/`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const res = await axios.get(`${BASE_URL}/wishlist/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const map = {};
+      const map = {};
 
-    res.data.forEach((item) => {
-      // ✅ FIX 1: use space.id (not space object)
-      map[item.space.id] = true;
-    });
+      res.data.forEach((item) => {
+        // ✅ FIX 1: use space.id (not space object)
+        map[item.space.id] = true;
+      });
 
-    // ✅ FIX 2: restore wishlist icon state after refresh
-    setWishlistMap(map);
+      // ✅ FIX 2: restore wishlist icon state after refresh
+      setWishlistMap(map);
 
-    // ✅ FIX 3: restore navbar count after refresh
-    setWishlistCount(res.data.length);
-
-  } catch (error) {
-    console.error("Error fetching wishlist", error);
-  }
-};
+      // ✅ FIX 3: restore navbar count after refresh
+      setWishlistCount(res.data.length);
+    } catch (error) {
+      console.error("Error fetching wishlist", error);
+    }
+  };
 
   // ✅ TOGGLE WISHLIST
   const handleAddToWishlist = async (spaceId) => {
@@ -89,17 +115,15 @@ export default function SpaceListing() {
 
   // ✅ LOAD DATA ON MOUNT
   useEffect(() => {
-  if (!token) return;
+    if (!token) return;
 
-  const loadData = async () => {
-    await fetchSpaces();
-    await fetchWishlist();
-  };
+    const loadData = async () => {
+      await fetchSpaces();
+      await fetchWishlist();
+    };
 
-  loadData();
-}, [token]);
-
-
+    loadData();
+  }, [token]);
 
   const prevImage = (spaceId, length) => {
     setImageIndex((prev) => ({
@@ -165,7 +189,6 @@ export default function SpaceListing() {
                     </>
                   )}
                 </div>
-
                 {/* DETAILS */}
                 <div className="p-5 space-y-2">
                   <div className="flex items-center justify-between">
@@ -219,20 +242,14 @@ export default function SpaceListing() {
                         {wishlistMap[space.id] ? (
                           <Heart
                             size={18}
-                            className="text-red-600 fill-current stroke-current"
+                            className="text-red-600 fill-current"
                           />
                         ) : (
-                          <Heart
-                            size={18}
-                            className="text-gray-500 stroke-current"
-                          />
+                          <Heart size={18} />
                         )}
                       </button>
 
-                      <button
-                        className="p-2 border rounded-full text-indigo-600 hover:bg-indigo-50"
-                        title="Chat with Owner"
-                      >
+                      <button onClick={() => handleChat(space)}>
                         <MessageCircle size={18} />
                       </button>
                     </div>

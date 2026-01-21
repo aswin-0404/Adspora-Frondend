@@ -10,6 +10,8 @@ import SpaceListing from "./user/Spaces"
 import Profile from "./user/Profile"
 import OwnerProfile from "./owner/OwnerProfile"
 import Wishlist from "./user/Wishlist"
+import Chat from "./chat"
+import OwnerInbox from "./owner/OwnerInbox"
 
 function App() {
 
@@ -25,11 +27,13 @@ function App() {
       <Route path="/owner/addspace" element={<AddSpace/>}/>
       <Route path="/myspace" element={<MySpace/>}/>
       <Route path="/ownerprofile" element={<OwnerProfile/>}/>
+      <Route path="/ownerinbox" element={<OwnerInbox/>}/>
 
       {/* Advertiser Routes */}
       <Route path='spaces/' element={<SpaceListing/>}/>
       <Route path="/profile" element={<Profile/>}/>
       <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/chat/:roomId" element={<Chat/>}/>
 
     </Routes>
 

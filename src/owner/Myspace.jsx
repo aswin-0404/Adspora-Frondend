@@ -124,13 +124,18 @@ const MySpace = () => {
                     </p>
 
                     <p className="text-sm">
-                      <span className="font-medium">Price:</span> ₹
-                      {space.price}
+                      <span className="font-medium">Price:</span> ₹{space.price}
                     </p>
 
                     <p className="text-sm text-gray-700 line-clamp-2">
                       {space.description}
                     </p>
+                    {/* ACTIONS */}
+                    <div className="pt-3 border-t">
+                      <button className="w-full py-2 text-sm font-medium text-red-600 border border-red-500 rounded-lg hover:bg-red-50 transition">
+                        Delete Space
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
