@@ -22,9 +22,7 @@ const Chat = () => {
   const socketRef = useRef(null);
   const bottomRef = useRef(null);
 
-  /* -------------------------------
-     FETCH CHAT HISTORY + SPACE
-  --------------------------------*/
+ 
   useEffect(() => {
     if (!roomId) return;
 
@@ -45,9 +43,7 @@ const Chat = () => {
       .catch((err) => console.error(err));
   }, [roomId, token]);
 
-  /* -------------------------------
-     WEBSOCKET CONNECTION
-  --------------------------------*/
+  
   useEffect(() => {
     if (!roomId) return;
 
@@ -61,16 +57,12 @@ const Chat = () => {
     return () => socketRef.current?.close();
   }, [roomId]);
 
-  /* -------------------------------
-     AUTO SCROLL
-  --------------------------------*/
+  
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  /* -------------------------------
-     SEND MESSAGE
-  --------------------------------*/
+
   const sendMessage = () => {
     if (!text.trim()) return;
 
@@ -91,7 +83,7 @@ const Chat = () => {
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
-      {/* ================= HEADER ================= */}
+      
       <div className="flex items-center gap-4 p-4 bg-white border-b">
         <button
           onClick={() => navigate(-1)}
@@ -120,7 +112,6 @@ const Chat = () => {
         )}
       </div>
 
-      {/* ================= MESSAGES ================= */}
       <div className="flex-1 overflow-y-auto p-6 space-y-3">
         {messages.map((msg, index) => {
           const mine = Number(msg.sender_id) === Number(userId);
@@ -156,7 +147,7 @@ const Chat = () => {
         <div ref={bottomRef} />
       </div>
 
-      {/* ================= INPUT ================= */}
+      
       <div className="p-4 bg-white border-t flex gap-3">
         <input
           type="text"
