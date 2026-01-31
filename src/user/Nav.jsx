@@ -1,17 +1,20 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/Authcontext";
-import { Heart, Bell, User, LogOut, Search } from "lucide-react";
+import { Heart, Bell, User, LogOut, Search, Mail } from "lucide-react";
 import { WishlistContext } from "../context/wishlistContext";
 import axios from "axios";
+import AdvertiserInbox from "./AdvertiserInbox";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const { wishlistCount,setWishlistCount } = useContext(WishlistContext);
+  const [inboxOpen, setInboxOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
+  const { wishlistCount, setWishlistCount } = useContext(WishlistContext);
 
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
@@ -21,53 +24,67 @@ export default function Navbar() {
     else navigate(path);
   };
 
-
   const handleLogout = () => {
-  logout();
-  setWishlistCount(0);
-  setProfileOpen(false);
-  navigate("/");
-};
-
-
-  useEffect(() => {
-  if (!user) {
+    logout();
     setWishlistCount(0);
-    return;
-  }
-
-  const fetchWishlistCount = async () => {
-    try {
-      const token = localStorage.getItem("access");
-      if (!token) return;
-
-      const res = await axios.get(
-        "http://127.0.0.1:8000/api/wishlist/count/",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setWishlistCount(res.data.count);
-    } catch (err) {
-      console.error("Wishlist count error", err);
-      setWishlistCount(0);
-    }
+    setProfileOpen(false);
+    navigate("/");
   };
 
-  fetchWishlistCount();
-}, [user]);
+  useEffect(() => {
+    if (!user) {
+      setWishlistCount(0);
+      return;
+    }
 
+    const fetchWishlistCount = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) return;
 
+        const res = await axios.get(
+          "http://127.0.0.1:8000/api/wishlist/count/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
+        setWishlistCount(res.data.count);
+      } catch (err) {
+        console.error("Wishlist count error", err);
+        setWishlistCount(0);
+      }
+    };
+
+    fetchWishlistCount();
+  }, [user]);
+  useEffect(() => {
+    if (!user) return;
+
+    axios
+      .get("http://127.0.0.1:8000/api/Notread/count/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      })
+      .then((res) => {
+        setUnreadCount(res.data.count || 0);
+      })
+      .catch(console.error);
+  }, [user]);
+
+  useEffect(() => {
+  if (inboxOpen) {
+    setUnreadCount(0);
+  }
+}, [inboxOpen]);
 
   return (
     <nav className="bg-white shadow-md fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-
           {/* LOGO */}
           <span
             className="text-2xl font-bold text-indigo-600 cursor-pointer"
@@ -78,7 +95,9 @@ export default function Navbar() {
 
           {/* NAV LINKS */}
           <div className="hidden md:flex items-center space-x-6">
-            <button onClick={() => navigate("/")} className="nav-btn">Home</button>
+            <button onClick={() => navigate("/")} className="nav-btn">
+              Home
+            </button>
             <button
               onClick={() => handleProtectedNav("/spaces")}
               className="nav-btn"
@@ -102,7 +121,6 @@ export default function Navbar() {
 
           {/* RIGHT SECTION */}
           <div className="hidden md:flex items-center space-x-5 relative">
-
             {/* ❤️ WISHLIST WITH COUNT */}
             <button
               onClick={() => handleProtectedNav("/wishlist")}
@@ -121,15 +139,21 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* 🔔 Notifications */}
-            {user && (
-              <button
-                onClick={() => handleProtectedNav("/notification")}
-                className="text-gray-600 hover:text-indigo-600"
-              >
-                <Bell size={22} />
-              </button>
-            )}
+            
+
+            {/* 📥 Inbox */}
+            {user?(<button
+                  onClick={() => setInboxOpen(true)}
+                  className="text-gray-600 hover:text-indigo-600 relative"
+                >
+                  <Mail size={22} />
+
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>):("")}
 
             {/* 👤 PROFILE */}
             {user ? (
@@ -176,6 +200,20 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+      {inboxOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          {/* OVERLAY */}
+          <div
+            className="flex-1 bg-black/30"
+            onClick={() => setInboxOpen(false)}
+          />
+
+          {/* RIGHT PANEL */}
+          <div className="w-full md:w-1/2 bg-gray-100 shadow-xl">
+            <AdvertiserInbox />
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

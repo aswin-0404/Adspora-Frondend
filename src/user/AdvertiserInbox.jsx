@@ -4,22 +4,23 @@ import Chat from "../chat.jsx";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
 
-const OwnerInbox = () => {
+const AdvertiserInbox = () => {
   const [rooms, setRooms] = useState([]);
+  const token = localStorage.getItem("access");
   const [activeRoomId, setActiveRoomId] = useState(null);
   const [unreadCounts, setUnreadCounts] = useState({});
+  
 
-  const token = localStorage.getItem("access");
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/chat/owner/inbox/`, {
+      .get(`${BASE_URL}/chat/advertiser/inbox/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => setRooms(res.data))
-      .catch(console.error);
+      .catch((err) => console.error("Inbox error", err));
   }, [token]);
 
   useEffect(() => {
@@ -44,13 +45,15 @@ const OwnerInbox = () => {
 
   return (
     <div className="flex h-[calc(100vh-64px)] bg-gray-100">
+
       {/* LEFT — INBOX */}
       <div className="w-full md:w-2/5 bg-white border-r flex flex-col">
+
         {/* Header */}
         <div className="px-6 py-5 border-b">
           <h2 className="text-xl font-semibold text-gray-900">Inbox</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Conversations with advertisers
+            Conversations with space owners
           </p>
         </div>
 
@@ -74,7 +77,7 @@ const OwnerInbox = () => {
               >
                 {/* Avatar */}
                 <div className="h-11 w-11 rounded-full bg-indigo-600 text-white flex items-center justify-center font-semibold uppercase flex-shrink-0">
-                  {room.advertiser.name.charAt(0)}
+                  {room.owner.name.charAt(0)}
                 </div>
 
                 {/* Message Content */}
@@ -117,4 +120,4 @@ const OwnerInbox = () => {
   );
 };
 
-export default OwnerInbox;
+export default AdvertiserInbox;

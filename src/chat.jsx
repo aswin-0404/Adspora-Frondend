@@ -6,10 +6,12 @@ import { Send, ArrowLeft } from "lucide-react";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
 
-const Chat = () => {
-  const { roomId } = useParams();
+const Chat = ({ roomId, embedded = false }) => {
+  const params = useParams();
+
+  const resolvedRoomId = embedded ? roomId : params.roomId;
+
   const navigate = useNavigate();
-  console.log("ROOM ID FROM URL:", roomId);
 
   const token = localStorage.getItem("access");
   const decoded = jwtDecode(token);
@@ -22,66 +24,82 @@ const Chat = () => {
   const socketRef = useRef(null);
   const bottomRef = useRef(null);
 
-  /* -------------------------------
-     FETCH CHAT HISTORY + SPACE
-  --------------------------------*/
   useEffect(() => {
-    if (!roomId) return;
+    if (!resolvedRoomId) return;
 
     axios
-      .get(`${BASE_URL}/chat/messages/${roomId}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      .get(`${BASE_URL}/chat/messages/${resolvedRoomId}/`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        if (res.data.messages) {
-          setMessages(res.data.messages);
-          setSpace(res.data.space);
-        } else {
-          setMessages(res.data);
-        }
+        setMessages(res.data.messages || []);
+        setSpace(res.data.space);
       })
-      .catch((err) => console.error(err));
-  }, [roomId, token]);
+      .catch(console.error);
+  }, [resolvedRoomId, token]);
 
-  /* -------------------------------
-     WEBSOCKET CONNECTION
-  --------------------------------*/
+
   useEffect(() => {
-    if (!roomId) return;
+  if (!resolvedRoomId) return;
 
-    socketRef.current = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomId}/`);
+  axios.patch(
+  `http://127.0.0.1:8000/api/chat/mark-read/${resolvedRoomId}/`,
+  {},
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+}, [resolvedRoomId, token]);
 
-    socketRef.current.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      setMessages((prev) => [...prev, data]);
-    };
 
-    return () => socketRef.current?.close();
-  }, [roomId]);
+  useEffect(() => {
+  if (!resolvedRoomId) return;
 
-  /* -------------------------------
-     AUTO SCROLL
-  --------------------------------*/
+  // If socket already exists for this room, do nothing
+  if (
+    socketRef.current &&
+    socketRef.current.readyState !== WebSocket.CLOSED
+  ) {
+    return;
+  }
+
+  const ws = new WebSocket(
+    `ws://127.0.0.1:8000/ws/chat/${resolvedRoomId}/`
+  );
+
+  socketRef.current = ws;
+
+  ws.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    setMessages((prev) => [...prev, data]);
+  };
+
+  ws.onclose = () => {
+    socketRef.current = null;
+  };
+
+  return () => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.close();
+    }
+  };
+}, [resolvedRoomId]);
+
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  /* -------------------------------
-     SEND MESSAGE
-  --------------------------------*/
   const sendMessage = () => {
     if (!text.trim()) return;
-
-    if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) {
-      console.error("WebSocket not connected");
+    if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN)
       return;
-    }
 
     socketRef.current.send(
       JSON.stringify({
-        text: text,
+        text,
         sender_id: userId,
       })
     );
@@ -90,41 +108,40 @@ const Chat = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100">
-      {/* ================= HEADER ================= */}
-      <div className="flex items-center gap-4 p-4 bg-white border-b">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 rounded-full hover:bg-gray-100"
-        >
-          <ArrowLeft size={20} />
-        </button>
+    <div className="w-full h-full min-h-0 flex flex-col bg-gray-100">
 
-        {space ? (
+      {/* HEADER */}
+      <div className="flex items-center gap-4 p-4 bg-white border-b">
+        {!embedded && (
+          <button
+            onClick={() => navigate(-1)}
+            className="p-2 rounded-full hover:bg-gray-100"
+          >
+            <ArrowLeft size={20} />
+          </button>
+        )}
+
+        {space && (
           <>
             <img
               src={space.images?.[0]?.image || "/placeholder.jpg"}
               alt={space.title}
               className="h-12 w-12 rounded-md object-cover"
             />
-
-            <div className="flex flex-col">
+            <div>
               <p className="font-semibold text-sm">{space.title}</p>
               <p className="text-xs text-gray-500">
                 {space.location} · ₹{space.price}
               </p>
             </div>
           </>
-        ) : (
-          <p className="font-semibold text-sm">Chat</p>
         )}
       </div>
 
-      {/* ================= MESSAGES ================= */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-3">
+      {/* MESSAGES */}
+      <div className="flex-1 min-h-0 w-full overflow-y-auto p-6 space-y-3">
         {messages.map((msg, index) => {
           const mine = Number(msg.sender_id) === Number(userId);
-
 
           return (
             <div
@@ -132,14 +149,13 @@ const Chat = () => {
               className={`flex ${mine ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-3xl px-4 py-2 rounded-xl text-sm shadow ${
+                className={`max-w-[75%] px-4 py-2 rounded-xl text-sm shadow ${
                   mine
                     ? "bg-indigo-600 text-white rounded-br-none"
                     : "bg-white text-gray-800 rounded-bl-none"
                 }`}
               >
                 <p>{msg.text}</p>
-
                 {msg.time_stamp && (
                   <p className="text-[10px] opacity-70 mt-1 text-right">
                     {new Date(msg.time_stamp).toLocaleTimeString([], {
@@ -152,15 +168,13 @@ const Chat = () => {
             </div>
           );
         })}
-
         <div ref={bottomRef} />
       </div>
 
-      {/* ================= INPUT ================= */}
+      {/* INPUT */}
       <div className="p-4 bg-white border-t flex gap-3">
         <input
-          type="text"
-          className="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex-1 px-4 py-2 border rounded-full focus:ring-2 focus:ring-indigo-500"
           placeholder="Type your message..."
           value={text}
           onChange={(e) => setText(e.target.value)}

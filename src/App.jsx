@@ -12,6 +12,7 @@ import OwnerProfile from "./owner/OwnerProfile"
 import Wishlist from "./user/Wishlist"
 import Chat from "./chat"
 import OwnerInbox from "./owner/OwnerInbox"
+import AdvertiserInbox from "./user/AdvertiserInbox"
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
       <Route path="/profile" element={<Profile/>}/>
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/chat/:roomId" element={<Chat/>}/>
+      <Route path="/advertiser/inbox" element={<AdvertiserInbox/>}/>
 
     </Routes>
 
