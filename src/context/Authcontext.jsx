@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
         email: formData.email,
         phone: formData.phone,
         role: formData.role,
+        adharnumber:formData.adharnumber,
         password: formData.password,
         confirmpassword: formData.confirmpassword,
 

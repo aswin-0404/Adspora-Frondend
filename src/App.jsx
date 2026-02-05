@@ -13,6 +13,11 @@ import Wishlist from "./user/Wishlist"
 import Chat from "./chat"
 import OwnerInbox from "./owner/OwnerInbox"
 import AdvertiserInbox from "./user/AdvertiserInbox"
+import PaymentPage from "./user/payment"
+import MyBookings from "./user/Bookedspaces"
+import OwnerBookings from "./owner/BookingRequest"
+import ForgotPassword from "./Accounts/Forgotpass"
+import ResetPassword from "./Accounts/Resetpassword"
 
 function App() {
 
@@ -21,6 +26,8 @@ function App() {
       <Route path="/" element={<LandingPage/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path='/forgot-password' element={<ForgotPassword/>}/>
+      <Route path='/reset-password/:uid/:token' element={<ResetPassword/>}/>
 
       {/* owner urls */}
 
@@ -29,6 +36,7 @@ function App() {
       <Route path="/myspace" element={<MySpace/>}/>
       <Route path="/ownerprofile" element={<OwnerProfile/>}/>
       <Route path="/ownerinbox" element={<OwnerInbox/>}/>
+      <Route path="/owner/booking/request/" element={<OwnerBookings/>}/>
 
       {/* Advertiser Routes */}
       <Route path='spaces/' element={<SpaceListing/>}/>
@@ -36,6 +44,9 @@ function App() {
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/chat/:roomId" element={<Chat/>}/>
       <Route path="/advertiser/inbox" element={<AdvertiserInbox/>}/>
+      <Route path="/space/booking/:spaceId" element={<PaymentPage/>}/>
+      <Route path="/advertiser/bookings/" element={<MyBookings/>}/>
+
 
     </Routes>
 

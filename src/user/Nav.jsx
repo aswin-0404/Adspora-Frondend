@@ -104,6 +104,10 @@ export default function Navbar() {
             >
               Explore Spaces
             </button>
+            <button
+              onClick={() => handleProtectedNav("/advertiser/bookings/")}
+              className="nav-btn"
+            >owned Spaces</button>
           </div>
 
           {/* SEARCH */}

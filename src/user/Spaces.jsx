@@ -20,28 +20,27 @@ export default function SpaceListing() {
   const navigate = useNavigate();
 
   const handleChat = async (space) => {
-    if (!space.owner?.id) {
-      alert("Owner not found for this space");
-      return;
-    }
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/chat/room-exists/?space=${space.id}&owner=${space.owner.id}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
-    try {
-      const res = await axios.post(
-        `${BASE_URL}/chat/room/`,
-        {
-          space_id: space.id,
-          owner_id: space.owner.id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
+    if (res.data.exists) {
+      // Open existing chat
       navigate(`/chat/${res.data.room_id}`);
-    } catch (err) {
-      console.error("Chat creation failed", err.response?.data);
+    } else {
+      // Open new chat UI
+      navigate(`/chat/new?space=${space.id}&owner=${space.owner.id}`);
     }
-  };
+  } catch (err) {
+    console.error("Chat check failed", err);
+  }
+};
+
+
 
   // ✅ FETCH SPACES
   const fetchSpaces = async () => {
@@ -255,6 +254,7 @@ export default function SpaceListing() {
                     </div>
 
                     <button
+                      onClick={()=>navigate(`/space/booking/${space.id}` )}
                       disabled={space.booked}
                       className={`w-full py-2 text-sm font-medium rounded-lg transition ${
                         space.booked

@@ -9,6 +9,26 @@ const MySpace = () => {
 
   const token = localStorage.getItem("access");
 
+  const handleDelete= async (id)=>{ 
+    try{
+        await axios.delete(`http://127.0.0.1:8000/api/ownerspace/delete/${id}/`,
+            {
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                }
+            }
+        )
+
+        setSpaces((prev)=>prev.filter((s)=>s.id!==id));
+        
+        alert("Space removed Succefully");
+    }catch(err){
+        console.log(err.response?.data);
+        alert(err.response?.data?.error || "Delete failed")
+        
+    }
+  }
+
   useEffect(() => {
     const fetchSpaces = async () => {
       try {
@@ -132,7 +152,7 @@ const MySpace = () => {
                     </p>
                     {/* ACTIONS */}
                     <div className="pt-3 border-t">
-                      <button className="w-full py-2 text-sm font-medium text-red-600 border border-red-500 rounded-lg hover:bg-red-50 transition">
+                      <button onClick={()=>handleDelete(space.id)} className="w-full py-2 text-sm font-medium text-red-600 border border-red-500 rounded-lg hover:bg-red-50 transition">
                         Delete Space
                       </button>
                     </div>

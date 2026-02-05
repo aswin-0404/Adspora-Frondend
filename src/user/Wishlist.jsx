@@ -3,12 +3,14 @@ import axios from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Navbar from "./Nav";
 import { WishlistContext } from "../context/wishlistContext";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
   const [imageIndex, setImageIndex] = useState({});
+  const navigate=useNavigate()
 
   const token = localStorage.getItem("access");
   const { setWishlistCount } = useContext(WishlistContext);
@@ -164,6 +166,7 @@ export default function Wishlist() {
                       </button>
 
                       <button
+                        onClick={()=>navigate(`/space/booking/${space.id}`)}
                         disabled={space.booked}
                         className={`flex-1 py-2 text-sm font-medium rounded-lg ${
                           space.booked

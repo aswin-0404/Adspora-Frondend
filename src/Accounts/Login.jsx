@@ -5,6 +5,8 @@ import { AuthContext } from "../context/Authcontext";
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -60,7 +62,7 @@ export default function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="you@example.com"
+              placeholder="Enter your mail"
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm
               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -70,20 +72,34 @@ export default function Login() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              placeholder="Enter your password"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm
-              focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                placeholder="Enter your password"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm
+      focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-indigo-600"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-indigo-600 cursor-pointer hover:underline">
+            <span
+              onClick={() => navigate("/forgot-password")}
+              className="text-indigo-600 cursor-pointer hover:underline"
+            >
               Forgot password?
             </span>
           </div>

@@ -36,7 +36,6 @@ export default function Register() {
     return;
   }
 
-  // ✅ HANDLE BACKEND FIELD ERRORS (FIX)
   if (result?.confirmpassword) {
     alert(result.confirmpassword[0]);
     return;
