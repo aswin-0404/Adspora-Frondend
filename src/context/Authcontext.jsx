@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
       return res.data;
     } catch (error) {
-      console.log("REGISTER ERROR:", error.response.data); // 👈 ADD THIS
+      console.log("REGISTER ERROR:", error.response.data);
       return error.response.data;
     }
   };

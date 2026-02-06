@@ -43,7 +43,6 @@ export default function OwnerProfile() {
       <div className="min-h-screen bg-gray-50 px-8 py-24">
         <div className="max-w-5xl mx-auto">
 
-          {/* PAGE HEADER */}
           <div className="mb-8">
             <h1 className="text-2xl font-semibold text-gray-900">
               Your Account
@@ -53,10 +52,8 @@ export default function OwnerProfile() {
             </p>
           </div>
 
-          {/* PROFILE CARD */}
           <div className="bg-white border border-gray-200 rounded-lg">
 
-            {/* HEADER */}
             <div className="px-6 py-5 border-b flex items-center justify-between">
               <div>
                 <p className="text-lg font-medium text-gray-900">
@@ -72,7 +69,6 @@ export default function OwnerProfile() {
               </span>
             </div>
 
-            {/* DETAILS */}
             <div className="px-6 py-6 space-y-6">
 
               <div className="grid grid-cols-3 items-center">
@@ -105,7 +101,6 @@ export default function OwnerProfile() {
 
             </div>
 
-            {/* FOOTER */}
             <div className="px-6 py-4 border-t bg-gray-50 flex justify-end">
               <button
                 disabled

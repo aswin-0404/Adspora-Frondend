@@ -5,7 +5,7 @@ import OwnerNavbar from "./OwnerNav";
 const MySpace = () => {
   const [spaces, setSpaces] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [imageIndex, setImageIndex] = useState({}); // per-space image index
+  const [imageIndex, setImageIndex] = useState({}); 
 
   const token = localStorage.getItem("access");
 
@@ -85,7 +85,6 @@ const MySpace = () => {
                   key={space.id}
                   className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
                 >
-                  {/* IMAGE CAROUSEL */}
                   <div className="relative w-full h-48">
                     <img
                       src={
@@ -116,7 +115,6 @@ const MySpace = () => {
                     )}
                   </div>
 
-                  {/* CONTENT */}
                   <div className="p-4 space-y-2">
                     <div className="flex items-center justify-between">
                       <h2 className="text-lg font-semibold">{space.title}</h2>
@@ -150,7 +148,6 @@ const MySpace = () => {
                     <p className="text-sm text-gray-700 line-clamp-2">
                       {space.description}
                     </p>
-                    {/* ACTIONS */}
                     <div className="pt-3 border-t">
                       <button onClick={()=>handleDelete(space.id)} className="w-full py-2 text-sm font-medium text-red-600 border border-red-500 rounded-lg hover:bg-red-50 transition">
                         Delete Space

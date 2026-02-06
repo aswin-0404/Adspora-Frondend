@@ -29,10 +29,8 @@ export default function SpaceListing() {
     );
 
     if (res.data.exists) {
-      // Open existing chat
       navigate(`/chat/${res.data.room_id}`);
     } else {
-      // Open new chat UI
       navigate(`/chat/new?space=${space.id}&owner=${space.owner.id}`);
     }
   } catch (err) {
@@ -42,7 +40,6 @@ export default function SpaceListing() {
 
 
 
-  // ✅ FETCH SPACES
   const fetchSpaces = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/spaces/`, {
@@ -56,7 +53,6 @@ export default function SpaceListing() {
     }
   };
 
-  // ✅ FETCH WISHLIST (IMPORTANT FIX)
   const fetchWishlist = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/wishlist/`, {
@@ -68,21 +64,17 @@ export default function SpaceListing() {
       const map = {};
 
       res.data.forEach((item) => {
-        // ✅ FIX 1: use space.id (not space object)
         map[item.space.id] = true;
       });
 
-      // ✅ FIX 2: restore wishlist icon state after refresh
       setWishlistMap(map);
 
-      // ✅ FIX 3: restore navbar count after refresh
       setWishlistCount(res.data.length);
     } catch (error) {
       console.error("Error fetching wishlist", error);
     }
   };
 
-  // ✅ TOGGLE WISHLIST
   const handleAddToWishlist = async (spaceId) => {
     try {
       const res = await axios.post(
@@ -97,13 +89,11 @@ export default function SpaceListing() {
 
       const isWishlisted = res.data.wishlisted;
 
-      // ✅ update wishlist map
       setWishlistMap((prev) => ({
         ...prev,
         [spaceId]: isWishlisted,
       }));
 
-      // ✅ update navbar count SAFELY
       setWishlistCount((count) =>
         isWishlisted ? count + 1 : Math.max(count - 1, 0)
       );
@@ -112,7 +102,6 @@ export default function SpaceListing() {
     }
   };
 
-  // ✅ LOAD DATA ON MOUNT
   useEffect(() => {
     if (!token) return;
 
@@ -156,7 +145,7 @@ export default function SpaceListing() {
                 key={space.id}
                 className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
               >
-                {/* IMAGE SLIDER */}
+
                 <div className="relative h-48 w-full overflow-hidden">
                   {images.length > 0 ? (
                     <img
@@ -188,7 +177,7 @@ export default function SpaceListing() {
                     </>
                   )}
                 </div>
-                {/* DETAILS */}
+
                 <div className="p-5 space-y-2">
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold">{space.title}</h2>
@@ -226,7 +215,6 @@ export default function SpaceListing() {
                     Posted on {new Date(space.created_at).toLocaleDateString()}
                   </p>
 
-                  {/* ACTIONS */}
                   <div className="pt-4 space-y-3">
                     <div className="flex justify-end gap-3">
                       <button

@@ -21,7 +21,6 @@ export default function OwnerNavbar() {
     navigate("/");
   };
 
-  // ✅ NEW: function to fetch booking count
   const fetchBookingCount = async () => {
     try {
       const res = await axios.get(
@@ -51,11 +50,9 @@ export default function OwnerNavbar() {
       })
       .catch(console.error);
 
-    // ✅ use the new function here
     fetchBookingCount();
   }, [user]);
 
-  // ✅ NEW: listen for booking updates from other pages
   useEffect(() => {
     const handleUpdate = () => fetchBookingCount();
 

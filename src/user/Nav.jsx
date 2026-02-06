@@ -85,7 +85,6 @@ export default function Navbar() {
     <nav className="bg-white shadow-md fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* LOGO */}
           <span
             className="text-2xl font-bold text-indigo-600 cursor-pointer"
             onClick={() => navigate("/")}
@@ -93,7 +92,6 @@ export default function Navbar() {
             Adspora
           </span>
 
-          {/* NAV LINKS */}
           <div className="hidden md:flex items-center space-x-6">
             <button onClick={() => navigate("/")} className="nav-btn">
               Home
@@ -110,7 +108,6 @@ export default function Navbar() {
             >owned Spaces</button>
           </div>
 
-          {/* SEARCH */}
           {user && (
             <div className="hidden md:flex items-center relative w-72">
               <Search size={18} className="absolute left-3 text-gray-400" />
@@ -123,9 +120,7 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* RIGHT SECTION */}
           <div className="hidden md:flex items-center space-x-5 relative">
-            {/* ❤️ WISHLIST WITH COUNT */}
             <button
               onClick={() => handleProtectedNav("/wishlist")}
               className="relative text-gray-600 hover:text-indigo-600"
@@ -145,7 +140,6 @@ export default function Navbar() {
 
             
 
-            {/* 📥 Inbox */}
             {user?(<button
                   onClick={() => setInboxOpen(true)}
                   className="text-gray-600 hover:text-indigo-600 relative"
@@ -159,7 +153,6 @@ export default function Navbar() {
                   )}
                 </button>):("")}
 
-            {/* 👤 PROFILE */}
             {user ? (
               <div className="relative">
                 <button
@@ -198,7 +191,6 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* MOBILE MENU ICON */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)}>☰</button>
           </div>
@@ -206,13 +198,11 @@ export default function Navbar() {
       </div>
       {inboxOpen && (
         <div className="fixed inset-0 z-50 flex">
-          {/* OVERLAY */}
           <div
             className="flex-1 bg-black/30"
             onClick={() => setInboxOpen(false)}
           />
 
-          {/* RIGHT PANEL */}
           <div className="w-full md:w-1/2 bg-gray-100 shadow-xl">
             <AdvertiserInbox />
           </div>

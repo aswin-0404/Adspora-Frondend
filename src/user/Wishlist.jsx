@@ -88,7 +88,6 @@ export default function Wishlist() {
                   key={item.id}
                   className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
                 >
-                  {/* IMAGE */}
                   <div className="relative h-48">
                     {images.length > 0 ? (
                       <img
@@ -120,7 +119,6 @@ export default function Wishlist() {
                     )}
                   </div>
 
-                  {/* DETAILS */}
                   <div className="p-5 space-y-2">
                     <div className="flex justify-between items-center">
                       <h2 className="text-xl font-semibold">{space.title}</h2>
@@ -155,7 +153,6 @@ export default function Wishlist() {
                       {space.description}
                     </p>
 
-                    {/* ACTION BUTTONS */}
                     <div className="pt-4 flex gap-3">
                       <button
                         onClick={() => removeFromWishlist(space.id)}

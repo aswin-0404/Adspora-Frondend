@@ -77,7 +77,6 @@ const OwnerBookings = () => {
                   key={b.id}
                   className="bg-white rounded-2xl shadow-sm hover:shadow-md transition p-6 flex flex-col md:flex-row md:items-center md:justify-between"
                 >
-                  {/* LEFT */}
                   <div className="space-y-1">
                     <h2 className="text-lg font-semibold text-gray-800">
                       {b.space_title}
@@ -95,7 +94,6 @@ const OwnerBookings = () => {
                     </p>
                   </div>
 
-                  {/* RIGHT */}
                   <div className="mt-4 md:mt-0 text-right space-y-3">
                     <p className="text-sm font-medium text-gray-700">
                       {b.months} months · ₹{b.amount}

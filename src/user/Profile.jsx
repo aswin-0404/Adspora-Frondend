@@ -41,11 +41,9 @@ export default function Profile() {
     <>
       <Navbar />
 
-      {/* PAGE CONTAINER */}
       <div className="min-h-screen bg-gray-50 px-8 py-24">
         <div className="max-w-6xl mx-auto">
 
-          {/* PAGE HEADER */}
           <div className="mb-10">
             <h1 className="text-2xl font-semibold text-gray-900">
               Account Settings
@@ -55,10 +53,8 @@ export default function Profile() {
             </p>
           </div>
 
-          {/* MAIN GRID */}
           <div className="grid grid-cols-12 gap-8">
 
-            {/* LEFT SIDEBAR */}
             <div className="col-span-4">
               <div className="bg-white border border-gray-200 rounded-lg p-6">
 
@@ -87,21 +83,17 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* RIGHT CONTENT */}
             <div className="col-span-8">
               <div className="bg-white border border-gray-200 rounded-lg">
 
-                {/* SECTION HEADER */}
                 <div className="px-6 py-4 border-b">
                   <h2 className="text-sm font-medium text-gray-900">
                     Personal Information
                   </h2>
                 </div>
 
-                {/* DETAILS */}
                 <div className="px-6 py-6 space-y-6">
 
-                  {/* NAME */}
                   <div className="grid grid-cols-3">
                     <p className="text-sm text-gray-500">Full Name</p>
                     <p className="col-span-2 text-sm text-gray-900">
@@ -109,7 +101,6 @@ export default function Profile() {
                     </p>
                   </div>
 
-                  {/* EMAIL */}
                   <div className="grid grid-cols-3">
                     <p className="text-sm text-gray-500">Email Address</p>
                     <p className="col-span-2 text-sm text-gray-900">
@@ -117,7 +108,6 @@ export default function Profile() {
                     </p>
                   </div>
 
-                  {/* PHONE */}
                   <div className="grid grid-cols-3">
                     <p className="text-sm text-gray-500">Phone Number</p>
                     <p className="col-span-2 text-sm text-gray-900">
@@ -125,7 +115,6 @@ export default function Profile() {
                     </p>
                   </div>
 
-                  {/* AADHAR */}
                   <div className="grid grid-cols-3">
                     <p className="text-sm text-gray-500">Aadhaar Number</p>
                     <p className="col-span-2 text-sm text-gray-900">
@@ -135,7 +124,6 @@ export default function Profile() {
 
                 </div>
 
-                {/* ACTION FOOTER */}
                 <div className="px-6 py-4 border-t bg-gray-50 flex justify-end">
                   <button
                     disabled

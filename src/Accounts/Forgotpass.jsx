@@ -31,7 +31,6 @@ export default function ForgotPassword() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100 px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
         
-        {/* Title */}
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
           Forgot Password
         </h2>
@@ -39,7 +38,6 @@ export default function ForgotPassword() {
           Enter your email to receive a password reset link
         </p>
 
-        {/* Input */}
         <input
           type="email"
           placeholder="Enter your email"
@@ -48,7 +46,6 @@ export default function ForgotPassword() {
           className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
         />
 
-        {/* Button */}
         <button
           onClick={submit}
           disabled={loading}
@@ -61,7 +58,6 @@ export default function ForgotPassword() {
           {loading ? "Sending..." : "Send Reset Link"}
         </button>
 
-        {/* Message */}
         {message && (
           <p className="text-center text-sm mt-4 text-gray-600">
             {message}

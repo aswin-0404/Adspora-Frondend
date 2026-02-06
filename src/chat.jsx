@@ -59,7 +59,6 @@ const Chat = ({ roomId, embedded = false }) => {
   useEffect(() => {
     if (!resolvedRoomId) return;
 
-    // If socket already exists for this room, do nothing
     if (
       socketRef.current &&
       socketRef.current.readyState !== WebSocket.CLOSED
@@ -94,7 +93,6 @@ const Chat = ({ roomId, embedded = false }) => {
   const sendMessage = async () => {
   if (!text.trim()) return;
 
-  // First message → create room
   if (resolvedRoomId === "new") {
     const res = await axios.post(
       `${BASE_URL}/chat/room/`,
@@ -110,7 +108,6 @@ const Chat = ({ roomId, embedded = false }) => {
     return;
   }
 
-  // Normal message
   socketRef.current.send(
     JSON.stringify({
       text,
@@ -125,7 +122,6 @@ const Chat = ({ roomId, embedded = false }) => {
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100">
 
-      {/* HEADER */}
       <div className="flex items-center gap-4 p-4 bg-white border-b">
         {!embedded && (
           <button
@@ -153,7 +149,6 @@ const Chat = ({ roomId, embedded = false }) => {
         )}
       </div>
 
-      {/* MESSAGES */}
       <div className="flex-1 min-h-0 w-full overflow-y-auto p-6 space-y-3 flex flex-col">
         {messages.length === 0 ? (
           <div className="flex-1 flex items-center justify-center text-gray-500">
@@ -196,7 +191,6 @@ const Chat = ({ roomId, embedded = false }) => {
         <div ref={bottomRef} />
       </div>
 
-      {/* INPUT */}
       <div className="p-4 bg-white border-t flex gap-3">
         <input
           className="flex-1 px-4 py-2 border rounded-full focus:ring-2 focus:ring-indigo-500"

@@ -16,11 +16,10 @@ export default function AddSpace() {
     description: "",
   });
 
-  const [images, setImages] = useState([]); // store as array
+  const [images, setImages] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Handle text inputs
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -28,18 +27,15 @@ export default function AddSpace() {
     });
   };
 
-  // Handle image selection
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages((prev) => [...prev, ...files]);
   };
 
-  // Remove image
   const removeImage = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -155,7 +151,6 @@ export default function AddSpace() {
           required
         />
 
-        {/* 🔥 MODERN IMAGE UPLOAD */}
         <div>
           <label className="block text-gray-700 font-medium mb-2">
             Upload Images
@@ -181,7 +176,6 @@ export default function AddSpace() {
             </label>
           </div>
 
-          {/* IMAGE PREVIEW */}
           {images.length > 0 && (
             <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
               {images.map((img, index) => (

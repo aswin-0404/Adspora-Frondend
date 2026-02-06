@@ -73,7 +73,6 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
 
-          {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Full Name
@@ -89,7 +88,6 @@ export default function Register() {
             />
           </div>
 
-          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -105,7 +103,6 @@ export default function Register() {
             />
           </div>
 
-          {/* Phone */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Phone Number
@@ -121,7 +118,6 @@ export default function Register() {
             />
           </div>
 
-          {/* Aadhaar */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Aadhaar Number
@@ -138,7 +134,6 @@ export default function Register() {
             />
           </div>
 
-          {/* Role */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Register as
@@ -168,7 +163,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -184,7 +178,6 @@ export default function Register() {
             />
           </div>
 
-          {/* Confirm Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Confirm Password

@@ -90,11 +90,8 @@ const PaymentPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       <div className="w-full max-w-4xl">
-        {/* WHITE CARD */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* TOP: TWO COLUMNS */}
           <div className="grid md:grid-cols-2">
-            {/* LEFT - SUMMARY */}
             <div className="p-6 border-r">
               <h2 className="text-xl font-semibold mb-4">Booking Summary</h2>
 
@@ -131,7 +128,6 @@ const PaymentPage = () => {
               </div>
             </div>
 
-            {/* RIGHT - PAYMENT */}
             <div className="p-6 space-y-4">
               <h2 className="text-xl font-semibold">Booking Details</h2>
 
@@ -203,7 +199,6 @@ const PaymentPage = () => {
           </div>
         </div>
 
-        {/* BACK BUTTON (outside card, attached visually) */}
         <div className="mt-3 flex justify-start">
           <button
             onClick={() => navigate(-1)}

@@ -6,7 +6,7 @@ export default function ResetPassword() {
   const { uid, token } = useParams();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState(""); // dummy email
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,6 @@ export default function ResetPassword() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100 px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
 
-        {/* Title */}
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
           Reset Password
         </h2>
@@ -47,7 +46,6 @@ export default function ResetPassword() {
           Enter your email and new password
         </p>
 
-        {/* Email Input (dummy) */}
         <input
           type="email"
           placeholder="Enter your email"
@@ -56,7 +54,6 @@ export default function ResetPassword() {
           className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
         />
 
-        {/* Password Input */}
         <div className="relative mb-4">
           <input
             type={showPassword ? "text" : "password"}
@@ -75,7 +72,6 @@ export default function ResetPassword() {
           </button>
         </div>
 
-        {/* Button */}
         <button
           onClick={submit}
           disabled={loading || !password}
@@ -88,7 +84,6 @@ export default function ResetPassword() {
           {loading ? "Updating..." : "Reset Password"}
         </button>
 
-        {/* Message */}
         {message && (
           <p className="text-center text-sm mt-4 text-gray-600">
             {message}
