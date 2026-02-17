@@ -1,13 +1,13 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/Authcontext";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const submit = async () => {
     try {
@@ -30,7 +30,7 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100 px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
-        
+
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
           Forgot Password
         </h2>
@@ -49,11 +49,10 @@ export default function ForgotPassword() {
         <button
           onClick={submit}
           disabled={loading}
-          className={`w-full py-3 rounded-lg font-medium text-white transition ${
-            loading
+          className={`w-full py-3 rounded-lg font-medium text-white transition ${loading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-indigo-600 hover:bg-indigo-700"
-          }`}
+            }`}
         >
           {loading ? "Sending..." : "Send Reset Link"}
         </button>

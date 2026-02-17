@@ -1,12 +1,13 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../../context/Authcontext";
 import axios from "axios";
 
 export default function ResetPassword() {
   const { uid, token } = useParams();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState(""); 
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,11 +76,10 @@ export default function ResetPassword() {
         <button
           onClick={submit}
           disabled={loading || !password}
-          className={`w-full py-3 rounded-lg font-medium text-white transition ${
-            loading || !password
+          className={`w-full py-3 rounded-lg font-medium text-white transition ${loading || !password
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-indigo-600 hover:bg-indigo-700"
-          }`}
+            }`}
         >
           {loading ? "Updating..." : "Reset Password"}
         </button>

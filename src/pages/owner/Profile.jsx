@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import OwnerNavbar from "./OwnerNav";
+import { AuthContext } from "../../context/Authcontext";
+import OwnerNavbar from "../../components/layout/OwnerNavbar";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function OwnerProfile() {
   const [profile, setProfile] = useState(null);
   const token = localStorage.getItem("access");
-    const [showEdit, setShowEdit] = useState(false);
-    const [formData, setFormData] = useState({
-      name: "",
-      email: "",
-      phone: "",
-      adharnumber: "",
-    });
+  const [showEdit, setShowEdit] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    adharnumber: "",
+  });
 
-  
+
 
   const fetchProfile = async () => {
     try {
@@ -29,7 +30,7 @@ export default function OwnerProfile() {
       console.error("Failed to load owner profile", error);
     }
   };
-  
+
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -37,19 +38,19 @@ export default function OwnerProfile() {
   if (!profile) {
     return (
       <>
-        <OwnerNavbar/>
+        <OwnerNavbar />
         <div className="h-screen flex items-center justify-center text-sm text-gray-500">
           Loading profile…
         </div>
       </>
     );
   }
-  
-  
 
-  const openEditModal=()=>{
+
+
+  const openEditModal = () => {
     setFormData({
-        name:profile.name||"",
+      name: profile.name || "",
       email: profile.email || "",
       phone: profile.phone || "",
       adharnumber: profile.adharnumber || "",
@@ -76,7 +77,7 @@ export default function OwnerProfile() {
         }
       );
       setShowEdit(false),
-      fetchProfile()
+        fetchProfile()
     } catch (err) {
       console.log("Update failed", err);
     }
@@ -148,7 +149,7 @@ export default function OwnerProfile() {
 
             <div className="px-6 py-4 border-t bg-gray-50 flex justify-end">
               <button
-              onClick={openEditModal}
+                onClick={openEditModal}
                 className="text-sm px-4 py-2 border border-gray-400 rounded-md
                            text-black-400"
               >

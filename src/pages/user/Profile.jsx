@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "./Nav";
+import Navbar from "../../components/layout/Navbar";
 import { User } from "lucide-react";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
@@ -72,7 +72,7 @@ export default function Profile() {
         }
       );
       setShowEdit(false),
-      fetchProfile()
+        fetchProfile()
     } catch (err) {
       console.log("Update failed", err);
     }
