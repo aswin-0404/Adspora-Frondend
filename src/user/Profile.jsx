@@ -8,6 +8,13 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 export default function Profile() {
   const [profile, setProfile] = useState(null);
   const token = localStorage.getItem("access");
+  const [showEdit, setShowEdit] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    adharnumber: "",
+  });
 
   useEffect(() => {
     fetchProfile();
@@ -37,13 +44,46 @@ export default function Profile() {
     );
   }
 
+  const openEditModal = () => {
+    setFormData({
+      name: profile.name || "",
+      email: profile.email || "",
+      phone: profile.phone || "",
+      adharnumber: profile.adharnumber || "",
+    });
+    setShowEdit(true);
+  };
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleEditProfile = async () => {
+    try {
+      await axios.patch(
+        `${BASE_URL}/edit-profile/`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      setShowEdit(false),
+      fetchProfile()
+    } catch (err) {
+      console.log("Update failed", err);
+    }
+  };
+
   return (
     <>
       <Navbar />
 
       <div className="min-h-screen bg-gray-50 px-8 py-24">
         <div className="max-w-6xl mx-auto">
-
           <div className="mb-10">
             <h1 className="text-2xl font-semibold text-gray-900">
               Account Settings
@@ -54,21 +94,15 @@ export default function Profile() {
           </div>
 
           <div className="grid grid-cols-12 gap-8">
-
             <div className="col-span-4">
               <div className="bg-white border border-gray-200 rounded-lg p-6">
-
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
                     <User className="text-gray-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">
-                      {profile.name}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Advertiser Account
-                    </p>
+                    <p className="font-medium text-gray-900">{profile.name}</p>
+                    <p className="text-sm text-gray-500">Advertiser Account</p>
                   </div>
                 </div>
 
@@ -76,16 +110,13 @@ export default function Profile() {
                   <p className="text-xs uppercase text-gray-400 mb-2">
                     Account Email
                   </p>
-                  <p className="text-sm text-gray-800">
-                    {profile.email}
-                  </p>
+                  <p className="text-sm text-gray-800">{profile.email}</p>
                 </div>
               </div>
             </div>
 
             <div className="col-span-8">
               <div className="bg-white border border-gray-200 rounded-lg">
-
                 <div className="px-6 py-4 border-b">
                   <h2 className="text-sm font-medium text-gray-900">
                     Personal Information
@@ -93,7 +124,6 @@ export default function Profile() {
                 </div>
 
                 <div className="px-6 py-6 space-y-6">
-
                   <div className="grid grid-cols-3">
                     <p className="text-sm text-gray-500">Full Name</p>
                     <p className="col-span-2 text-sm text-gray-900">
@@ -121,24 +151,108 @@ export default function Profile() {
                       {profile.adharnumber || "Not provided"}
                     </p>
                   </div>
-
                 </div>
 
                 <div className="px-6 py-4 border-t bg-gray-50 flex justify-end">
                   <button
-                    disabled
-                    className="text-sm px-4 py-2 border border-gray-300 rounded-md text-gray-400 cursor-not-allowed"
+                    onClick={openEditModal}
+                    className="text-sm px-4 py-2 border rounded-md hover:bg-gray-100"
                   >
-                    Edit Profile (Coming Soon)
+                    Edit Profile
                   </button>
                 </div>
-
               </div>
             </div>
-
           </div>
         </div>
       </div>
+
+      {showEdit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl animate-fadeIn">
+
+            <div className="flex items-center justify-between px-6 py-4 border-b">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Edit Profile
+              </h2>
+
+              <button
+                onClick={() => setShowEdit(false)}
+                className="text-gray-400 hover:text-gray-700 text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="px-6 py-6 space-y-5">
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Full Name
+                </label>
+                <input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Email Address
+                </label>
+                <input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Phone Number
+                </label>
+                <input
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Aadhaar Number
+                </label>
+                <input
+                  name="adharnumber"
+                  value={formData.adharnumber}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-2xl">
+              <button
+                onClick={() => setShowEdit(false)}
+                className="px-5 py-2 text-sm border rounded-lg hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleEditProfile}
+                className="px-6 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

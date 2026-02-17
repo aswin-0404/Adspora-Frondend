@@ -108,18 +108,6 @@ export default function Navbar() {
             >owned Spaces</button>
           </div>
 
-          {user && (
-            <div className="hidden md:flex items-center relative w-72">
-              <Search size={18} className="absolute left-3 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search spaces, locations..."
-                className="w-full pl-10 pr-4 py-2 text-sm border rounded-full
-                           focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-          )}
-
           <div className="hidden md:flex items-center space-x-5 relative">
             <button
               onClick={() => handleProtectedNav("/wishlist")}

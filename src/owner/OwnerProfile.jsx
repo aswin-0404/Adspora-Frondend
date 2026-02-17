@@ -7,10 +7,15 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 export default function OwnerProfile() {
   const [profile, setProfile] = useState(null);
   const token = localStorage.getItem("access");
+    const [showEdit, setShowEdit] = useState(false);
+    const [formData, setFormData] = useState({
+      name: "",
+      email: "",
+      phone: "",
+      adharnumber: "",
+    });
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
+  
 
   const fetchProfile = async () => {
     try {
@@ -24,6 +29,10 @@ export default function OwnerProfile() {
       console.error("Failed to load owner profile", error);
     }
   };
+  
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   if (!profile) {
     return (
@@ -35,7 +44,43 @@ export default function OwnerProfile() {
       </>
     );
   }
+  
+  
 
+  const openEditModal=()=>{
+    setFormData({
+        name:profile.name||"",
+      email: profile.email || "",
+      phone: profile.phone || "",
+      adharnumber: profile.adharnumber || "",
+    });
+    setShowEdit(true)
+  }
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleEditProfile = async () => {
+    try {
+      await axios.patch(
+        `${BASE_URL}/edit-profile/`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      setShowEdit(false),
+      fetchProfile()
+    } catch (err) {
+      console.log("Update failed", err);
+    }
+  };
   return (
     <>
       <OwnerNavbar />
@@ -103,17 +148,104 @@ export default function OwnerProfile() {
 
             <div className="px-6 py-4 border-t bg-gray-50 flex justify-end">
               <button
-                disabled
-                className="text-sm px-4 py-2 border border-gray-300 rounded-md
-                           text-gray-400 cursor-not-allowed"
+              onClick={openEditModal}
+                className="text-sm px-4 py-2 border border-gray-400 rounded-md
+                           text-black-400"
               >
-                Edit Profile (Coming Soon)
+                Edit Profile
               </button>
             </div>
 
           </div>
         </div>
       </div>
+
+      {showEdit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl animate-fadeIn">
+
+            <div className="flex items-center justify-between px-6 py-4 border-b">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Edit Profile
+              </h2>
+
+              <button
+                onClick={() => setShowEdit(false)}
+                className="text-gray-400 hover:text-gray-700 text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="px-6 py-6 space-y-5">
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Full Name
+                </label>
+                <input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Email Address
+                </label>
+                <input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Phone Number
+                </label>
+                <input
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Aadhaar Number
+                </label>
+                <input
+                  name="adharnumber"
+                  value={formData.adharnumber}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-2xl">
+              <button
+                onClick={() => setShowEdit(false)}
+                className="px-5 py-2 text-sm border rounded-lg hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleEditProfile}
+                className="px-6 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
