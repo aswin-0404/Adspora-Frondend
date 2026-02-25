@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Chat from "../common/Chat";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 const AdvertiserInbox = ({ className = "h-[calc(100vh-64px)]" }) => {
   const [rooms, setRooms] = useState([]);

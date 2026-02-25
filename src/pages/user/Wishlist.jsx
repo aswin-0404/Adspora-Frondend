@@ -6,7 +6,7 @@ import { WishlistContext } from "../../context/wishlistContext";
 import { AuthContext } from "../../context/Authcontext";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 export default function Wishlist() {
   const [wishlist, setWishlist] = useState([]);

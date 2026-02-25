@@ -3,7 +3,7 @@ import axios from "axios";
 import OwnerNavbar from "../../components/layout/OwnerNavbar";
 import { Clock, CheckCircle, XCircle, AlertCircle, Plus } from "lucide-react";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 const OwnerBookings = () => {
   const [bookings, setBookings] = useState([]);

@@ -11,7 +11,7 @@ const PaymentPage = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("access");
-  const BASE_URL = "http://127.0.0.1:8000/api";
+  const BASE_URL = "https://adspora.onrender.com/api";
 
   useEffect(() => {
     axios

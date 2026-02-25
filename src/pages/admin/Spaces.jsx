@@ -24,7 +24,8 @@ import {
 } from "lucide-react";
 import AdminSidebar from "../../components/layout/AdminSidebar";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+import { BASE_URL } from "../../api";
+
 
 export default function Spaces() {
   const [spaces, setSpaces] = useState([]);
@@ -44,7 +45,7 @@ export default function Spaces() {
     size: "",
     price: "",
     description: "",
-    is_approved: true, 
+    is_approved: true,
   });
 
   const token = localStorage.getItem("access");

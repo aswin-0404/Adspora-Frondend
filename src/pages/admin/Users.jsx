@@ -3,7 +3,7 @@ import axios from "axios";
 import { Search, UserCheck, UserX, Trash2, UserPlus, X, Mail, Phone, Lock, ShieldCheck, User as UserIcon } from "lucide-react";
 import AdminSidebar from "../../components/layout/AdminSidebar";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 export default function Users() {
     const [users, setUsers] = useState([]);

@@ -19,7 +19,7 @@ export default function ResetPassword() {
       setMessage("");
 
       await axios.post(
-        `http://127.0.0.1:8000/api/reset-password/${uid}/${token}/`,
+        `https://adspora.onrender.com/api/reset-password/${uid}/${token}/`,
         { password }
       );
 

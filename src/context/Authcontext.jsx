@@ -1,10 +1,9 @@
 import { createContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../api";
 
 export const AuthContext = createContext();
-
-const BASE_URL = "http://127.0.0.1:8000/api";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
@@ -21,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         email: formData.email,
         phone: formData.phone,
         role: formData.role,
-        adharnumber:formData.adharnumber,
+        adharnumber: formData.adharnumber,
         password: formData.password,
         confirmpassword: formData.confirmpassword,
 

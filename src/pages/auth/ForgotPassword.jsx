@@ -14,7 +14,7 @@ export default function ForgotPassword() {
       setLoading(true);
       setMessage("");
 
-      await axios.post("http://127.0.0.1:8000/api/forgot-password/", {
+      await axios.post("https://adspora.onrender.com/api/forgot-password/", {
         email,
       });
 

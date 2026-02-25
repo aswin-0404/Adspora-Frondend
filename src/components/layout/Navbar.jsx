@@ -7,7 +7,7 @@ import axios from "axios";
 import AdvertiserInbox from "../../pages/user/Inbox";
 import Button from "../ui/Button";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

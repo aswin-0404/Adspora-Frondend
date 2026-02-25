@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/Authcontext";
 import OwnerNavbar from "../../components/layout/OwnerNavbar";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 export default function OwnerProfile() {
   const [profile, setProfile] = useState(null);

@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { Send, ArrowLeft } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 const Chat = ({ roomId, embedded = false }) => {
   const params = useParams();
@@ -47,7 +47,7 @@ const Chat = ({ roomId, embedded = false }) => {
     if (!resolvedRoomId) return;
 
     axios.patch(
-      `http://127.0.0.1:8000/api/chat/mark-read/${resolvedRoomId}/`,
+      `https://adspora.onrender.com/api/chat/mark-read/${resolvedRoomId}/`,
       {},
       {
         headers: {
@@ -67,7 +67,7 @@ const Chat = ({ roomId, embedded = false }) => {
       return;
     }
 
-    const ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${resolvedRoomId}/`);
+    const ws = new WebSocket(`wss://adspora.onrender.com/ws/chat/${resolvedRoomId}/`);
 
     socketRef.current = ws;
 

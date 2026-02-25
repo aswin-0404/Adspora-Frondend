@@ -5,7 +5,7 @@ import Button from "../../components/ui/Button";
 import { Trash2, MapPin, ChevronLeft, ChevronRight, Plus, Layout } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://adspora.onrender.com/api";
 
 const MySpace = () => {
   const [spaces, setSpaces] = useState([]);
