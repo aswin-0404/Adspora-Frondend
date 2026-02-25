@@ -3,7 +3,7 @@ import axios from "axios";
 import { Users, LayoutDashboard, MapPin, Calendar, Activity, ShieldCheck, AlertCircle, Zap, ArrowUpRight } from "lucide-react";
 import AdminSidebar from "../../components/layout/AdminSidebar";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 export default function AdminDashboard() {
     const [stats, setStats] = useState({
@@ -293,3 +293,4 @@ export default function AdminDashboard() {
         </div>
     );
 }
+

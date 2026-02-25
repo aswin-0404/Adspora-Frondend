@@ -11,7 +11,7 @@ const PaymentPage = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("access");
-  const BASE_URL = "https://adspora.onrender.com/api";
+  const BASE_URL = "https://adspora-frondend.vercel.app";
 
   useEffect(() => {
     axios
@@ -214,3 +214,4 @@ const PaymentPage = () => {
 };
 
 export default PaymentPage;
+

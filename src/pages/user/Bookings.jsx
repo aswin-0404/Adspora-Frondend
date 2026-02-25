@@ -3,7 +3,7 @@ import axios from "axios";
 import Navbar from "../../components/layout/Navbar";
 import { ShoppingBag } from "lucide-react";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -120,3 +120,4 @@ const MyBookings = () => {
 };
 
 export default MyBookings;
+

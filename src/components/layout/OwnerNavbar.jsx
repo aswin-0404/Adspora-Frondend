@@ -5,7 +5,7 @@ import { User, LogOut, Mail, Menu, X } from "lucide-react";
 import OwnerInbox from "../../pages/owner/Inbox";
 import axios from "axios";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 export default function OwnerNavbar() {
   const { user, logout } = useContext(AuthContext);
@@ -246,3 +246,4 @@ export default function OwnerNavbar() {
     </>
   );
 }
+

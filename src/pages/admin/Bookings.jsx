@@ -3,7 +3,7 @@ import axios from "axios";
 import { Search, Info, Check, X } from "lucide-react";
 import AdminSidebar from "../../components/layout/AdminSidebar";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 export default function Bookings() {
     const [bookings, setBookings] = useState([]);
@@ -153,3 +153,4 @@ export default function Bookings() {
         </div>
     );
 }
+

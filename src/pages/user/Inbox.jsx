@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Chat from "../common/Chat";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 const AdvertiserInbox = ({ className = "h-[calc(100vh-64px)]" }) => {
   const [rooms, setRooms] = useState([]);
@@ -130,3 +130,4 @@ const AdvertiserInbox = ({ className = "h-[calc(100vh-64px)]" }) => {
 };
 
 export default AdvertiserInbox;
+

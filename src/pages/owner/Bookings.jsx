@@ -3,7 +3,7 @@ import axios from "axios";
 import OwnerNavbar from "../../components/layout/OwnerNavbar";
 import { Clock, CheckCircle, XCircle, AlertCircle, Plus } from "lucide-react";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 const OwnerBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -140,3 +140,4 @@ const OwnerBookings = () => {
 };
 
 export default OwnerBookings;
+

@@ -6,7 +6,7 @@ import { WishlistContext } from "../../context/wishlistContext";
 import { AuthContext } from "../../context/Authcontext";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 export default function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
@@ -191,3 +191,4 @@ export default function Wishlist() {
     </>
   );
 }
+

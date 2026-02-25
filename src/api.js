@@ -1,2 +1,3 @@
-export const BASE_URL = "https://adspora.onrender.com/api";
-export const WS_URL = "wss://adspora.onrender.com/ws";
+export const BASE_URL = "https://adspora-frondend.vercel.app";
+export const WS_URL = "wss://adspora-frondend.vercel.app/ws";
+

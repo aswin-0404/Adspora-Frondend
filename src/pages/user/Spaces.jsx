@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 export default function SpaceListing() {
   const [spaces, setSpaces] = useState([]);
@@ -373,3 +373,4 @@ export default function SpaceListing() {
     </div>
   );
 }
+

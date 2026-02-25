@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import OwnerNavbar from "../../components/layout/OwnerNavbar";
 import Chat from "../common/Chat";
 
-const BASE_URL = "https://adspora.onrender.com/api";
+const BASE_URL = "https://adspora-frondend.vercel.app";
 
 const OwnerInbox = ({ className = "h-[calc(100vh-64px)]" }) => {
   const [rooms, setRooms] = useState([]);
@@ -130,3 +130,4 @@ const OwnerInbox = ({ className = "h-[calc(100vh-64px)]" }) => {
 };
 
 export default OwnerInbox;
+
