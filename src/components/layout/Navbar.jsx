@@ -7,7 +7,7 @@ import axios from "axios";
 import AdvertiserInbox from "../../pages/user/Inbox";
 import Button from "../ui/Button";
 
-const BASE_URL = "https://adspora-frondend.vercel.app";
+const BASE_URL = "https://adspora-backend.onrender.com/api";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

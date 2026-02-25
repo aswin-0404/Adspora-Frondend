@@ -19,7 +19,7 @@ export default function ResetPassword() {
       setMessage("");
 
       await axios.post(
-        `https://adspora-frondend.vercel.app/reset-password/${uid}/${token}/`,
+        `https://adspora-backend.onrender.com/api/reset-password/${uid}/${token}/`,
         { password }
       );
 

@@ -5,7 +5,7 @@ import Button from "../../components/ui/Button";
 import { Trash2, MapPin, ChevronLeft, ChevronRight, Plus, Layout } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "https://adspora-frondend.vercel.app";
+const BASE_URL = "https://adspora-backend.onrender.com/api";
 
 const MySpace = () => {
   const [spaces, setSpaces] = useState([]);

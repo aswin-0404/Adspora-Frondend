@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/Authcontext";
 import OwnerNavbar from "../../components/layout/OwnerNavbar";
 
-const BASE_URL = "https://adspora-frondend.vercel.app";
+const BASE_URL = "https://adspora-backend.onrender.com/api";
 
 export default function OwnerProfile() {
   const [profile, setProfile] = useState(null);

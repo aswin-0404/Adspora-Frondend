@@ -3,7 +3,7 @@ import axios from "axios";
 import Navbar from "../../components/layout/Navbar";
 import { User } from "lucide-react";
 
-const BASE_URL = "https://adspora-frondend.vercel.app";
+const BASE_URL = "https://adspora-backend.onrender.com/api";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);

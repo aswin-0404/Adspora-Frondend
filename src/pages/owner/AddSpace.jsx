@@ -6,7 +6,7 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import { Upload, X, MapPin, Layout, DollarSign, Type, FileText } from "lucide-react";
 
-const BASE_URL = "https://adspora-frondend.vercel.app";
+const BASE_URL = "https://adspora-backend.onrender.com/api";
 
 export default function AddSpace() {
   const navigate = useNavigate();

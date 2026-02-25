@@ -14,7 +14,7 @@ export default function ForgotPassword() {
       setLoading(true);
       setMessage("");
 
-      await axios.post("https://adspora-frondend.vercel.app/forgot-password/", {
+      await axios.post("https://adspora-backend.onrender.com/api/forgot-password/", {
         email,
       });
 
