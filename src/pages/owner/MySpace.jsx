@@ -142,8 +142,8 @@ const MySpace = () => {
 
                     <div className="absolute top-4 left-4 z-10">
                       <div className={`px-3 py-1 rounded-lg text-[11px] font-bold shadow-sm backdrop-blur-md border flex items-center gap-2 ${space.is_approved
-                          ? "bg-white/90 text-emerald-600 border-emerald-100"
-                          : "bg-white/90 text-amber-600 border-amber-100"
+                        ? "bg-white/90 text-emerald-600 border-emerald-100"
+                        : "bg-white/90 text-amber-600 border-amber-100"
                         }`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${space.is_approved ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`}></span>
                         {space.is_approved ? "Active" : "Under Review"}
@@ -151,16 +151,16 @@ const MySpace = () => {
                     </div>
 
                     {images.length > 1 && (
-                      <div className="absolute inset-0 bg-transparent flex items-center justify-between px-4">
+                      <div className="absolute inset-0 bg-transparent flex items-center justify-between px-4 pointer-events-none">
                         <button
                           onClick={(e) => { e.stopPropagation(); prevImage(space.id, images.length); }}
-                          className="w-10 h-10 bg-white/20 hover:bg-white text-gray-900 rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 transition-all"
+                          className="w-10 h-10 bg-white/20 hover:bg-white text-gray-900 rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 transition-all pointer-events-auto"
                         >
                           <ChevronLeft size={20} />
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); nextImage(space.id, images.length); }}
-                          className="w-10 h-10 bg-white/20 hover:bg-white text-gray-900 rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 transition-all"
+                          className="w-10 h-10 bg-white/20 hover:bg-white text-gray-900 rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 transition-all pointer-events-auto"
                         >
                           <ChevronRight size={20} />
                         </button>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 import { WishlistContext } from "../../context/wishlistContext";
+import { AuthContext } from "../../context/Authcontext";
 import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://127.0.0.1:8000/api";
@@ -14,16 +15,19 @@ export default function Wishlist() {
 
   const token = localStorage.getItem("access");
   const { setWishlistCount } = useContext(WishlistContext);
+  const { user } = useContext(AuthContext);
 
   const fetchWishlist = async () => {
+    if (!token) return;
     try {
       const res = await axios.get(`${BASE_URL}/wishlist/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setWishlist(res.data);
-      setWishlistCount(res.data.length);
+      const data = Array.isArray(res.data) ? res.data : res.data.results || [];
+      setWishlist(data);
+      setWishlistCount(data.length);
     } catch (error) {
       console.error("Error fetching wishlist", error);
     }
@@ -49,8 +53,13 @@ export default function Wishlist() {
   };
 
   useEffect(() => {
+    if (!token) {
+      setWishlist([]);
+      setWishlistCount(0);
+      return;
+    }
     fetchWishlist();
-  }, []);
+  }, [token, user]);
 
   const prevImage = (id, length) => {
     setImageIndex((prev) => ({
@@ -85,7 +94,7 @@ export default function Wishlist() {
 
               return (
                 <div
-                  key={item.id}
+                  key={item.id || (item.space && item.space.id)}
                   className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
                 >
                   <div className="relative h-48">
@@ -124,8 +133,8 @@ export default function Wishlist() {
                       <h2 className="text-xl font-semibold">{space.title}</h2>
                       <span
                         className={`text-xs px-3 py-1 rounded-full ${space.booked
-                            ? "bg-red-100 text-red-700"
-                            : "bg-green-100 text-green-700"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-green-100 text-green-700"
                           }`}
                       >
                         {space.booked ? "Booked" : "Available"}
@@ -165,8 +174,8 @@ export default function Wishlist() {
                         onClick={() => navigate(`/space/booking/${space.id}`)}
                         disabled={space.booked}
                         className={`flex-1 py-2 text-sm font-medium rounded-lg ${space.booked
-                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                            : "bg-indigo-600 text-white hover:bg-indigo-700"
+                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          : "bg-indigo-600 text-white hover:bg-indigo-700"
                           }`}
                       >
                         Grab Now

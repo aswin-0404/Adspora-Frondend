@@ -18,7 +18,7 @@ const OwnerBookings = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setBookings(res.data);
+      setBookings(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Failed to load owner bookings", err);
     } finally {
@@ -80,7 +80,17 @@ const OwnerBookings = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded uppercase">ID #{b.id}</span>
-                    <span className="text-gray-400 text-xs">{new Date(b.created_at).toLocaleDateString()}</span>
+                    <span className="text-gray-400 text-xs">
+                      {(() => {
+                        if (!b.created_at) return "N/A";
+                        const parts = b.created_at.split("-");
+                        if (parts.length === 3) {
+                          const date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                          return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+                        }
+                        return new Date(b.created_at).toLocaleDateString();
+                      })()}
+                    </span>
                   </div>
 
                   <h2 className="text-lg font-bold text-gray-900 mb-4">{b.space_title}</h2>
@@ -98,15 +108,15 @@ const OwnerBookings = () => {
                     <div className="w-px h-6 bg-gray-100 hidden md:block"></div>
                     <div>
                       <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Revenue</p>
-                      <p className="text-sm font-bold text-indigo-600">₹{b.amount.toLocaleString()}</p>
+                      <p className="text-sm font-bold text-indigo-600">₹{Number(b.amount || 0).toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-6 md:mt-0 flex flex-row md:flex-col items-center md:items-end gap-3">
                   <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase border ${b.status === "CONFIRMED" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
-                      b.status === "REJECTED" ? "bg-rose-50 text-rose-600 border-rose-100" :
-                        "bg-amber-50 text-amber-600 border-amber-100"
+                    b.status === "REJECTED" ? "bg-rose-50 text-rose-600 border-rose-100" :
+                      "bg-amber-50 text-amber-600 border-amber-100"
                     }`}>
                     {b.status}
                   </span>

@@ -19,7 +19,7 @@ const MyBookings = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setBookings(res.data);
+        setBookings(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error("Failed to load bookings", err);
       } finally {
@@ -69,7 +69,17 @@ const MyBookings = () => {
                     <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded font-black uppercase tracking-widest">
                       #{booking.id}
                     </span>
-                    <span className="text-gray-400 text-xs">{new Date(booking.created_at).toLocaleDateString()}</span>
+                    <span className="text-gray-400 text-xs">
+                      {(() => {
+                        if (!booking.created_at) return "N/A";
+                        const parts = booking.created_at.split("-");
+                        if (parts.length === 3) {
+                          const date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                          return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+                        }
+                        return new Date(booking.created_at).toLocaleDateString();
+                      })()}
+                    </span>
                   </div>
 
                   <h2 className="text-lg font-bold text-gray-900 mb-4">{booking.space_title}</h2>
@@ -87,15 +97,15 @@ const MyBookings = () => {
                     <div className="w-px h-6 bg-gray-100 hidden md:block"></div>
                     <div>
                       <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Total Amount</p>
-                      <p className="text-sm font-bold text-indigo-600">₹{booking.amount?.toLocaleString()}</p>
+                      <p className="text-sm font-bold text-indigo-600">₹{Number(booking.amount || 0).toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-6 md:mt-0">
                   <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.1em] border ${booking.status === "CONFIRMED" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
-                      booking.status === "REJECTED" ? "bg-rose-50 text-rose-600 border-rose-100" :
-                        "bg-amber-50 text-amber-600 border-amber-100"
+                    booking.status === "REJECTED" ? "bg-rose-50 text-rose-600 border-rose-100" :
+                      "bg-amber-50 text-amber-600 border-amber-100"
                     }`}>
                     {booking.status}
                   </span>

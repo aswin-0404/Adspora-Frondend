@@ -19,36 +19,49 @@ export default function Bookings() {
     const fetchBookings = async () => {
         try {
 
-            const res = await axios.get(`${BASE_URL}/bookings/`, {
+            const res = await axios.get(`${BASE_URL}/booking-details/`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setBookings(res.data || []);
+            setBookings(Array.isArray(res.data) ? res.data : []);
         } catch (error) {
             console.error("Failed to fetch bookings", error);
-            // Mock Data
-            setBookings([
-                { id: 101, space: "Prime Billboard", advertiser: "Tech Solutions", owner: "City Ads", date: "2024-03-15", status: "confirmed", amount: 45000 },
-                { id: 102, space: "Mall LED", advertiser: "Fashion Co", owner: "Retail Media", date: "2024-03-16", status: "pending", amount: 12000 },
-                { id: 103, space: "Bus Shelter", advertiser: "Local Cafe", owner: "Transit Ads", date: "2024-03-14", status: "cancelled", amount: 5000 },
-            ]);
         } finally {
             setLoading(false);
         }
     };
 
     const filteredBookings = bookings.filter((booking) =>
-        booking.space?.toLowerCase().includes(search.toLowerCase()) ||
-        booking.advertiser?.toLowerCase().includes(search.toLowerCase())
+        booking.space_title?.toLowerCase().includes(search.toLowerCase()) ||
+        booking.advertiser_name?.toLowerCase().includes(search.toLowerCase())
     );
 
     const getStatusStyles = (status) => {
         switch (status) {
-            case "confirmed": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-emerald-900/20";
-            case "pending": return "bg-amber-500/10 text-amber-400 border-amber-500/20 shadow-amber-900/20";
-            case "cancelled": return "bg-red-500/10 text-red-400 border-red-500/20 shadow-red-900/20";
+            case "CONFIRMED": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-emerald-900/20";
+            case "PENDING": return "bg-amber-500/10 text-amber-400 border-amber-500/20 shadow-amber-900/20";
+            case "CANCELLED": return "bg-red-500/10 text-red-400 border-red-500/20 shadow-red-900/20";
             default: return "bg-slate-500/10 text-slate-400 border-slate-500/20";
         }
     };
+
+    const handleBookingAccept = async (id) => {
+        try {
+            await axios.patch(`${BASE_URL}/accept-booking/${id}/`, {}, { headers: { Authorization: `Bearer ${token}` } }),
+                fetchBookings()
+        } catch (err) {
+            console.log("Booking accept error", err);
+        }
+    }
+
+    const handleRejectBooking = async (id) => {
+        try {
+            await axios.patch(`${BASE_URL}/reject-booking/${id}/`, {}, { headers: { Authorization: `Bearer ${token}` } }),
+                fetchBookings()
+        } catch (err) {
+            console.log("booking reject error", err);
+        }
+
+    }
 
     return (
         <div className="flex h-screen bg-slate-950">
@@ -82,6 +95,8 @@ export default function Bookings() {
                                 <th className="px-6 py-4 border-b border-slate-800">Date</th>
                                 <th className="px-6 py-4 border-b border-slate-800">Amount</th>
                                 <th className="px-6 py-4 border-b border-slate-800">Status</th>
+                                <th className="px-6 py-4 border-b border-slate-800">Duration</th>
+
                                 <th className="px-6 py-4 border-b border-slate-800 text-right">Actions</th>
                             </tr>
                         </thead>
@@ -89,26 +104,41 @@ export default function Bookings() {
                             {filteredBookings.map((booking) => (
                                 <tr key={booking.id} className="hover:bg-slate-800/50 transition-colors group">
                                     <td className="px-6 py-4 text-slate-500 font-mono text-xs">#{booking.id}</td>
-                                    <td className="px-6 py-4 font-medium text-slate-200 group-hover:text-white transition-colors">{booking.space}</td>
-                                    <td className="px-6 py-4 text-slate-400">{booking.advertiser}</td>
-                                    <td className="px-6 py-4 text-slate-400">{booking.owner}</td>
-                                    <td className="px-6 py-4 text-slate-500 text-sm">{new Date(booking.date).toLocaleDateString()}</td>
-                                    <td className="px-6 py-4 font-mono text-indigo-400 font-medium">₹{booking.amount.toLocaleString()}</td>
+                                    <td className="px-6 py-4 font-medium text-slate-200 group-hover:text-white transition-colors">{booking.space_title}</td>
+                                    <td className="px-6 py-4 text-slate-400">{booking.advertiser_name}</td>
+                                    <td className="px-6 py-4 text-slate-400">{booking.space_owner}</td>
+                                    <td className="px-6 py-4 text-slate-500 text-sm">
+                                        {(() => {
+                                            if (!booking.created_at) return "N/A";
+                                            const parts = booking.created_at.split("-");
+                                            if (parts.length === 3) {
+                                                const date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                                                return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+                                            }
+                                            return new Date(booking.created_at).toLocaleDateString();
+                                        })()}
+                                    </td>
+                                    <td className="px-6 py-4 font-mono text-indigo-400 font-medium">₹{Number(booking.amount || 0).toLocaleString()}</td>
                                     <td className="px-6 py-4">
                                         <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border shadow-lg ${getStatusStyles(booking.status)}`}>
                                             {booking.status}
                                         </span>
                                     </td>
+                                    <td className="px-6 py-4 text-slate-500 text-sm">{booking.months}-Months</td>
                                     <td className="px-6 py-4 text-right flex justify-end gap-2">
                                         <button className="p-2 text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/10 rounded-lg transition-all hover:scale-105 active:scale-95" title="View Details">
                                             <Info size={18} />
                                         </button>
-                                        {booking.status === "pending" && (
+                                        {booking.status === "PENDING" && (
                                             <>
-                                                <button className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-all hover:scale-105 active:scale-95" title="Confirm">
+                                                <button
+                                                    onClick={() => handleBookingAccept(booking.id)}
+                                                    className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-all hover:scale-105 active:scale-95" title="Confirm">
                                                     <Check size={18} />
                                                 </button>
-                                                <button className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all hover:scale-105 active:scale-95" title="Cancel">
+                                                <button
+                                                    onClick={() => handleRejectBooking(booking.id)}
+                                                    className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all hover:scale-105 active:scale-95" title="Cancel">
                                                     <X size={18} />
                                                 </button>
                                             </>

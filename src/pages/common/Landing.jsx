@@ -53,13 +53,6 @@ export default function LandingPage() {
                 Explore Spaces
                 <ArrowRight className="ml-2 w-5 h-5" />
               </button>
-
-              <button
-                onClick={handleAction}
-                className="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200"
-              >
-                List Your Space
-              </button>
             </div>
 
             <div className="mt-10 flex items-center gap-6 text-sm font-medium text-gray-500">
