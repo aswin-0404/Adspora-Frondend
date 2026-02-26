@@ -91,33 +91,41 @@ const Chat = ({ roomId, embedded = false }) => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+
+
   const sendMessage = async () => {
-    if (!text.trim()) return;
+  if (!text.trim()) return;
 
-    if (resolvedRoomId === "new") {
-      const res = await axios.post(
-        `${BASE_URL}/chat/room/`,
-        {
-          space_id: spaceIdFromQuery,
-          owner_id: ownerIdFromQuery,
-          text,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  if (resolvedRoomId === "new") {
+    const res = await axios.post(
+      `${BASE_URL}/chat/room/`,
+      {
+        space_id: spaceIdFromQuery,
+        owner_id: ownerIdFromQuery,
+        text,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-      navigate(`/chat/${res.data.room_id}`);
-      return;
-    }
+    navigate(`/chat/${res.data.room_id}`);
+    return;
+  }
 
+  if (
+    socketRef.current &&
+    socketRef.current.readyState === WebSocket.OPEN
+  ) {
     socketRef.current.send(
       JSON.stringify({
         text,
         sender_id: userId,
       })
     );
-
     setText("");
-  };
+  } else {
+    console.log("WebSocket not connected yet.");
+  }
+};
 
 
   return (
